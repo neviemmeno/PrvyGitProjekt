@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prihlásenie a Registrácia</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 400px;
+      overflow: hidden;
+    }
+
+    .form-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    .form-header h1 {
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
+
+    .form-header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .form-content {
+      padding: 30px 25px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    input.error {
+      border-color: #ff6b6b;
+    }
+
+    .error-message {
+      color: #ff6b6b;
+      font-size: 12px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-toggle {
+      background: #f0f0f0;
+      color: #667eea;
+      border: 2px solid #e0e0e0;
+      flex: 1;
+    }
+
+    .btn-toggle:hover {
+      background: #e8e8e8;
+    }
+
+    .btn-toggle.active {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+
+    .toggle-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #e0e0e0;
+      padding-bottom: 20px;
+    }
+
+    .form-section {
+      display: none;
+    }
+
+    .form-section.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .success-message {
+      background: #d4edda;
+      color: #155724;
+      padding: 12px 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+      border: 1px solid #c3e6cb;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    .form-footer {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid #e0e0e0;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    input[type="checkbox"] {
+      width: auto;
+      cursor: pointer;
+    }
+
+    .checkbox-group label {
+      margin-bottom: 0;
+    }
+
+    .password-toggle {
+      position: relative;
+    }
+
+    .password-toggle input {
+      padding-right: 40px;
+    }
+
+    .password-toggle-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #667eea;
+      font-size: 18px;
+      padding: 5px;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        max-width: 100%;
+      }
+
+      .form-header h1 {
+        font-size: 24px;
+      }
+
+      .form-content {
+        padding: 20px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="form-header">
+      <h1>Vitajte</h1>
+      <p>Spravujte svoj účet</p>
+    </div>
+
+    <div class="form-content">
+      <div class="toggle-buttons">
+        <button class="btn-toggle active" data-form="login">Prihlásenie</button>
+        <button class="btn-toggle" data-form="register">Registrácia</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div class="form-section active" id="login-form">
+        <div class="success-message" id="login-success">
+          ✓ Prihlásili ste sa úspešne!
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" placeholder="vase@priklad.sk" required>
+            <div class="error-message"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="login-password">Heslo</label>
+            <div class="password-toggle">
+              <input type="password" id="login-password" placeholder="Zadajte heslo" required>
+              <button type="button" class="password-toggle-btn" onclick="togglePassword('login-password')">👁️</button>
+            </div>
+            <div class="error-message"></div>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <input type="checkbox" id="login-remember" name="remember">
+            <label for="login-remember">Zapamätať si ma</label>
+          </div>
+
+          <button type="submit" class="btn-primary">Prihlásiť sa</button>
+        </form>
+
+        <div class="form-footer">
+          <p><a href="#" onclick="resetForgotPassword(event)" style="color: #667eea; text-decoration: none;">Zabudli ste heslo?</a></p>
+        </div>
+      </div>
+
+      <!-- REGISTRATION FORM -->
+      <div class="form-section" id="register-form">
+        <div class="success-message" id="register-success">
+          ✓ Účet bol úspešne vytvorený! Teraz sa môžete prihlásiť.
+        </div>
+
+        <form id="registerForm" onsubmit="handleRegister(event)">
+          <div class="form-group">
+            <label for="register-name">Celé meno</label>
+            <input type="text" id="register-name" placeholder="Meno Priezvisko" required>
+            <div class="error-message"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="register-email">Email</label>
+            <input type="email" id="register-email" placeholder="vase@priklad.sk" required>
+            <div class="error-message"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="register-password">Heslo</label>
+            <div class="password-toggle">
+              <input type="password" id="register-password" placeholder="Min. 8 znakov" required minlength="8">
+              <button type="button" class="password-toggle-btn" onclick="togglePassword('register-password')">👁️</button>
+            </div>
+            <div class="error-message"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="register-password-confirm">Potvrdiť heslo</label>
+            <div class="password-toggle">
+              <input type="password" id="register-password-confirm" placeholder="Zopakujte heslo" required>
+              <button type="button" class="password-toggle-btn" onclick="togglePassword('register-password-confirm')">👁️</button>
+            </div>
+            <div class="error-message"></div>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <input type="checkbox" id="register-terms" name="terms" required>
+            <label for="register-terms">Súhlasím s <a href="#" style="color: #667eea; text-decoration: none;">podmienkami</a></label>
+          </div>
+
+          <button type="submit" class="btn-primary">Zaregistrovať sa</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle between login and registration forms
+    document.querySelectorAll('.btn-toggle').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const formType = this.dataset.form;
+        
+        // Update active button
+        document.querySelectorAll('.btn-toggle').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Update active form
+        document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
+        document.getElementById(formType + '-form').classList.add('active');
+        
+        // Hide success messages
+        document.querySelectorAll('.success-message').forEach(msg => msg.classList.remove('show'));
+        
+        // Clear form
+        if (formType === 'login') {
+          document.getElementById('loginForm').reset();
+          clearErrors('login');
+        } else {
+          document.getElementById('registerForm').reset();
+          clearErrors('register');
+        }
+      });
+    });
+
+    // Toggle password visibility
+    function togglePassword(inputId) {
+      const input = document.getElementById(inputId);
+      const btn = event.target.closest('.password-toggle-btn');
+      
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        btn.textContent = '👁️';
+      }
+    }
+
+    // Handle login
+    function handleLogin(e) {
+      e.preventDefault();
+      clearErrors('login');
+      
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const remember = document.getElementById('login-remember').checked;
+      
+      let isValid = true;
+
+      // Validation
+      if (!validateEmail(email)) {
+        showError('login-email', 'Prosím, zadajte platný email');
+        isValid = false;
+      }
+
+      if (password.length < 3) {
+        showError('login-password', 'Heslo musí mať aspoň 3 znaky');
+        isValid = false;
+      }
+
+      if (isValid) {
+        // Simulate successful login
+        const userData = {
+          email: email,
+          timestamp: new Date().toLocaleString('sk-SK')
+        };
+        
+        localStorage.setItem('user', JSON.stringify(userData));
+        
+        if (remember) {
+          localStorage.setItem('rememberMe', 'true');
+        }
+        
+        showSuccess('login-success');
+        
+        // Reset form
+        document.getElementById('loginForm').reset();
+        
+        setTimeout(() => {
+          alert('Vitajte späť, ' + email + '!');
+        }, 500);
+      }
+    }
+
+    // Handle registration
+    function handleRegister(e) {
+      e.preventDefault();
+      clearErrors('register');
+      
+      const name = document.getElementById('register-name').value.trim();
+      const email = document.getElementById('register-email').value.trim();
+      const password = document.getElementById('register-password').value;
+      const passwordConfirm = document.getElementById('register-password-confirm').value;
+      const terms = document.getElementById('register-terms').checked;
+      
+      let isValid = true;
+
+      // Validation
+      if (name.length < 3) {
+        showError('register-name', 'Meno musí mať aspoň 3 znaky');
+        isValid = false;
+      }
+
+      if (!validateEmail(email)) {
+        showError('register-email', 'Prosím, zadajte platný email');
+        isValid = false;
+      }
+
+      if (password.length < 8) {
+        showError('register-password', 'Heslo musí mať aspoň 8 znakov');
+        isValid = false;
+      }
+
+      if (password !== passwordConfirm) {
+        showError('register-password-confirm', 'Heslá sa nezhodujú');
+        isValid = false;
+      }
+
+      if (!terms) {
+        showError('register-terms', 'Musíte súhlasiť s podmienkami');
+        isValid = false;
+      }
+
+      if (isValid) {
+        // Simulate successful registration
+        const userData = {
+          name: name,
+          email: email,
+          timestamp: new Date().toLocaleString('sk-SK')
+        };
+        
+        localStorage.setItem('newUser', JSON.stringify(userData));
+        
+        showSuccess('register-success');
+        document.getElementById('registerForm').reset();
+        
+        setTimeout(() => {
+          // Switch to login form
+          document.querySelector('[data-form="login"]').click();
+          alert('Účet bol vytvorený! Prihláste sa prosím.');
+        }, 1500);
+      }
+    }
+
+    // Validation helper
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    // Show error message
+    function showError(inputId, message) {
+      const input = document.getElementById(inputId);
+      const errorDiv = input.nextElementSibling;
+      
+      if (errorDiv && errorDiv.classList.contains('error-message')) {
+        input.classList.add('error');
+        errorDiv.textContent = message;
+        errorDiv.classList.add('show');
+      }
+    }
+
+    // Clear all errors
+    function clearErrors(formType) {
+      const form = document.getElementById(formType + 'Form');
+      form.querySelectorAll('input').forEach(input => {
+        input.classList.remove('error');
+        const errorDiv = input.nextElementSibling;
+        if (errorDiv && errorDiv.classList.contains('error-message')) {
+          errorDiv.classList.remove('show');
+        }
+      });
+    }
+
+    // Show success message
+    function showSuccess(successId) {
+      const successDiv = document.getElementById(successId);
+      successDiv.classList.add('show');
+      
+      setTimeout(() => {
+        successDiv.classList.remove('show');
+      }, 4000);
+    }
+
+    // Reset forgot password
+    function resetForgotPassword(e) {
+      e.preventDefault();
+      const email = prompt('Zadajte svoj email:');
+      if (email && validateEmail(email)) {
+        alert('Pokyny na obnovenie hesla boli poslané na: ' + email);
+      }
+    }
+
+    // Load remembered email
+    window.addEventListener('load', () => {
+      if (localStorage.getItem('rememberMe') === 'true') {
+        const userData = JSON.parse(localStorage.getItem('user'));
+        if (userData) {
+          document.getElementById('login-email').value = userData.email;
+          document.getElementById('login-remember').checked = true;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
